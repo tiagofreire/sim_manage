@@ -68,20 +68,12 @@ class Main extends Conexao{
       $sql_create_inicio = "CREATE TABLE ".$tabela."(";
       $sql_create_fim = ");";
       $sql_create_campos = "";
-      $sql_insert_inicio = "INSERT INTO ".$tabela."(";// VALUES(";
-      $sql_insert_fim = ");";
-      $sql_insert_campos = "";
-      $sql_insert_valores = array();
-      $campos_insert ="";
       if (($handle = fopen($caminho.$arquivo[$x], "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
           $num = count($data);
           
           $row++;
-          for ($c=0; $c < $num; $c++) {
-             $campos_insert .= "\"aaaaaaaaaaaa".$data[$c]."\",";
-          }
-          $sql_insert_valores[$c] = $campos_insert;
+          //$sql_insert_valores[$row] = $campos_insert;
         }
         for($i=0;$i<$num;$i++){
           $sql_insert_campos .= "\"".strtolower($tabela.$i)."\",";
@@ -93,13 +85,14 @@ class Main extends Conexao{
         //echo $sql_create_inicio.$sql_create_campos.$sql_create_fim; 
         fclose($handle);
       } 
-     
+    
       
-      echo count($sql_insert_valores);
+      //echo count($sql_insert_valores);
       echo "A tabela <b>".$tabela."</b> foi criada com <b>".$row."</b> registros: <br /></p>\n";
       //echo "INSERT INTO ".$tabela."(".$sql_insert_campos.") VALUES(".$sql_insert_valores.");<br><br>";
-      //self::query_db($sql_create_inicio.$sql_create_campos.$sql_create_fim);
-      //self::query_db($sql); 
+      self::query_db("SET CLIENT_ENCODING TO 'latin1';");
+      self::query_db($sql_create_inicio.$sql_create_campos.$sql_create_fim);
+      self::query_db("copy $tabela from '".$caminho.$arquivo[$x]."' with CSV;"); 
     }
   }
 }
