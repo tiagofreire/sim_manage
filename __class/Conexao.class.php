@@ -1,6 +1,6 @@
 <?php 
 
-class Conexao{
+class Conexao extends Util{
 
     var $db_HOST = "localhost";
     var $db_PORT = "5432";

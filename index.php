@@ -5,6 +5,7 @@
 <title>|SimManage V1.0|</title>
 <meta http-equiv="Content-Type"	content="text/html; charset=UTF-8" />
   
+  <script language="javascript" src="__js/jquery.min.1.4.1.js"></script>
   <script language="javascript" src="__js/ajax.js"></script>
   <link rel="stylesheet" type="text/css" href="__css/style.css"  name="hover">
 

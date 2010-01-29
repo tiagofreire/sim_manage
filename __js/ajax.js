@@ -1,20 +1,15 @@
 var xmlhttp	= false;
-var xmlhttp2= false;
 try{
   xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-  xmlhttp2= new ActiveXObject("Msxml2.XMLHTTP");
 }catch(e){
   try{
     xmlhttp	= new ActiveXObject("Microsoft.XMLHTTP");
-    xmlhttp2= new ActiveXObject("Microsoft.XMLHTTP");
   }catch (E){
     xmlhttp = false;
-    xmlhttp2= false;
   }
 }
 if(!xmlhttp && typeof XMLHttpRequest != "undefined"){
   xmlhttp = new XMLHttpRequest();
-  xmlhttp2= new XMLHttpRequest();
 }
 
 var ajax = {
@@ -27,12 +22,12 @@ var ajax = {
 	document.getElementById('nome_dir').value='/';
 	document.getElementById('busca_dir').click();
   },
-  buscaId : function(caminho, arquivos){
+  buscaId : function(caminho){
 	var path = caminho;
 	if(path.substr(-1) != '/'){
 	  path = path + '/';
 	}
-	if(arquivos!=''){
+	    //alert(path);
 	xmlhttp.open('GET','__controller/main.php?acao=mostraDir&nome_dir='+path,true);
 	xmlhttp.onreadystatechange = function(){
 	if(xmlhttp.readyState == 1) document.getElementById('resultado').innerHTML = "<div id='load'>carregando...</div>";
@@ -45,9 +40,6 @@ var ajax = {
           }
         }
       }
-    }
-    }else{
-      alert('nenhum');
     }
     xmlhttp.send(null);
   },
@@ -75,51 +67,51 @@ var ajax = {
 	    //alert(path);
 	
   },
+  
   converteArquivos : function(caminho, arquivos){
+
     var arquivo = arquivos.split(',');
     var x=0;
     var i=0;
     var n=0;
+    var convert = Array();
     var html = '<div class="topo"><ul><li><a href="javascript:void(0);" onclick="document.getElementById(\'popup\').style.display=\'none\';">x</a></li></ul></div>';
     html += '<div class="corpo" id="corpo"><ul>';
     for(x;x < arquivo.length;x++){
-      html += '<li id="arq_'+x+'">'+arquivo[x]+'</li>';
+      html += '<li id="arq_'+x+'"></li>';
     }
     html += '</ul></div>';
-     
-    setInterval(function () {
+    jQuery.ajax({
+      type: "GET",
+      url: "__controller/main.php",
+      data: "acao=converteArquivos&caminho="+caminho+"&arquivos="+arquivo,
+      success: function(msg){
+        document.getElementById('arq_'+n).innerHTML = msg;
+        convert = msg;
+      }
+    });
+           
+           
+    /*setInterval(function () {
        if(i<x){
          document.getElementById('arq_'+i).innerHTML = '<img src="__img/load.gif">';
        }
          setTimeout(function(){
          if(n<x){
-           alert(arquivo[n]);
-           xmlhttp2.open('GET','__controller/main.php?acao=converteArquivos&nome_dir='+arquivo[n],true);
-           xmlhttp2.onreadystatechange = function(){
-             if(xmlhttp2.readyState == 4){
-               if(xmlhttp2.status == 200){
-                 if(xmlhttp2.responseText){
-                   
-                   document.getElementById('arq_'+n).innerHTML = xmlhttp2.responseText;
-                   document.getElementById('arq_'+n).innerHTML = "s";
-                 }else{
-                   document.getElementById('arq_'+n).innerHTML = "Nenhum resultado encontrado!";
-                 }
-               }
-             }
-           }
-           xmlhttp2.send(null);         
            
+           
+
+
          }
          n++;
        },1000);
        i++;
-    }, 1000);
+    }, 1000);*/
     
     
     document.getElementById('popup').style.display='block'; 
     document.getElementById('popup').innerHTML = html;
-    this.buscaId(caminho,'AAAAAA');
+    this.buscaId(caminho);
   },
   
   enter : function(event){
@@ -127,3 +119,4 @@ var ajax = {
       document.getElementById('busca_dir').click();
   }
 }
+
