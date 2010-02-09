@@ -1,0 +1,12 @@
+<ul>
+  <li><a href="#" onclick="javascript:ajax.voltaDir();">..</a></li>
+<% Dir.open(params[:diretorio]).each do |dir| %>
+  <% if dir !~ /^\.+[0-9a-zA-Z\.(\.\~\-\_)]{0,30}$/  %>
+  <% if File.directory?(params[:diretorio]+'/'+dir)%>
+   <li><%= link_to dir, "javascript:void(0);", :onclick=>"ajax.navegaDiretorio('diretorio', '#{dir}');"%></li>
+  <% else%>
+   <li><%=  dir%></li>
+  <% end%>
+  <% end%>
+<% end %>
+</ul>

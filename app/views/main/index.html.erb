@@ -1,0 +1,11 @@
+<div id="popup">&nbsp;</div>
+
+  <% form_remote_tag :url => { :action => "diretorio"}, :update => "result" do %>
+    <%= text_field_tag :diretorio, nil, :onclick=>"enter();"%><br />
+    <input checked="checked" id="arquivo" name="pasta" type="radio" value="arquivo" />Arquivo   
+    <input id="pasta" name="pasta" type="radio" value="pasta" /> pasta<br />
+
+
+    <%= submit_tag "Buscar", :disable_with => "Aguarde...", :id=>"btn_busca" %>
+  <% end %>
+  <div id="result"></div>
